@@ -112,9 +112,6 @@ void logic() {
     flashRange(0, ledEnd-1, 1000);
     //flashWinner();
     exit(0);
-    delay(5000);
-    lastButtonPressedMillis = 0;
-    ballPos = -1;
   }
   if(ballPos == ledStart) on_one_hold();
   else if(ballPos == (ledEnd - 1)) on_two_hold();
