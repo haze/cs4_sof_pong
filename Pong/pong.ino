@@ -1,4 +1,3 @@
-
 #define o_btn 0
 #define t_btn 13
 #define ledStart 2
@@ -28,6 +27,7 @@ int opr() { return !pres(o_btn); }
 int tpr() { return !pres(t_btn); }
 
 void on_opr() {
+  Serial.println("one pressed");
   if(one.isHolding) {
     send(ledEnd - 1);
     lastButtonPressedMillis = millis();
@@ -107,20 +107,26 @@ void flashWinner() {
 
 void logic() {
   flash();
-  if(millis() >= (lastButtonPressedMillis + 1000)) {
+  if(millis() >= (lastButtonPressedMillis + 2000)) {
     all(false);
-    flashRange(0, ledEnd-1, 1000);
-    //flashWinner();
+    all(false);
+    if(one.isHolding)
+      for(int i = 0; i < 3; i++)
+        flashRange(ledEnd / 2, ledEnd, 200);
+    else
+      for(int i = 0; i < 3; i++)
+        flashRange(ledStart, ledEnd / 2, 200);
     exit(0);
   }
   if(ballPos == ledStart) on_one_hold();
   else if(ballPos == (ledEnd - 1)) on_two_hold();
   if(opr()) on_opr();
   if(tpr()) on_tpr();
-  Serial.print("ballpos = ");
+  /*Serial.print("ballpos = ");
   Serial.println(ballPos);
   Serial.print("oh: "); Serial.println(one.isHolding ? "true" : "false");
   Serial.print("th: "); Serial.println(two.isHolding ? "true" : "false");
+  */
 }
 
 void game() {
@@ -128,5 +134,7 @@ void game() {
 }
 
 void loop() {
-  game();
+   game();
+  //for(int i = ledStart; i < ledEnd; i++)
+  //  digitalWrite(i, HIGH);
 }
